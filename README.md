@@ -3,7 +3,7 @@
 A full-stack web application for managing pharmaceutical product launches through a structured 7-stage gate workflow with real-time collaboration, RBAC, and audit trails.
 
 ## Live Demo
-*[Coming soon]*
+   [Watch walkthrough] - (https://github.com/Nikjin22/flamingo-stagegate/releases/download/v1.0-demo/Flamingo.-.Stagegate.mp4)
 
 ## Screenshots
 *[Add your screenshots here]*
