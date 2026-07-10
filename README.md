@@ -22,7 +22,7 @@ A full-stack web application for managing pharmaceutical product launches throug
 ### Product Timeline
 ![Readiness](https://github.com/user-attachments/assets/0f6cb19a-5348-45b1-b71f-b9a6c2eaf1b7)
 
-### Document Management
+### Readiness Assessment
 ![Documents](https://github.com/user-attachments/assets/9acdc54a-b63c-495a-bacb-fb536cb31b20)
 
 ### Audit Trail
