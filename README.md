@@ -8,7 +8,7 @@ A full-stack web application for managing pharmaceutical product launches throug
 ## Screenshots
 
 ### Login Page
-![Login](https://github.com/user-attachments/assets/ffd452ec-baa4-45ad-9ebb-43a1d0c9d56b)
+![Login](https://github.com/user-attachments/assets/ce35bf48-6f37-41fb-b71e-31ee596dad55)
 
 ### Dashboard
 ![Dashboard](https://github.com/user-attachments/assets/be17b305-7f2f-45ac-b730-2683490b8164)
@@ -16,17 +16,17 @@ A full-stack web application for managing pharmaceutical product launches throug
 ### Kanban Task Board
 ![Kanban](https://github.com/user-attachments/assets/997704e3-4885-4d3b-bad9-be9111e8219c)
 
-### Launch Timeline
+### Launches
 ![Timeline](https://github.com/user-attachments/assets/ddf8db22-6efe-43c9-bdff-4a5d7fb6853c)
 
-### Readiness Assessment
+### Product Timeline
 ![Readiness](https://github.com/user-attachments/assets/0f6cb19a-5348-45b1-b71f-b9a6c2eaf1b7)
 
 ### Document Management
-![Documents](https://github.com/user-attachments/assets/ce35bf48-6f37-41fb-b71e-31ee596dad55)
+![Documents](https://github.com/user-attachments/assets/9acdc54a-b63c-495a-bacb-fb536cb31b20)
 
 ### Audit Trail
-![Audit](https://github.com/user-attachments/assets/9acdc54a-b63c-495a-bacb-fb536cb31b20)
+![Audit](https://github.com/user-attachments/assets/ffd452ec-baa4-45ad-9ebb-43a1d0c9d56b)
 
 ## Tech Stack
 
