@@ -1,0 +1,232 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  fullName      String
+  passwordHash  String
+  isActive      Boolean  @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+
+  userRoles         UserRole[]
+  ownedLaunches     Launch[]       @relation("LaunchOwner")
+  managedLaunches   Launch[]       @relation("LaunchManager")
+  assignedTasks     Task[]
+  gateApprovers     GateApprover[]
+  comments          Comment[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  documents         Document[]
+  assessments       ReadinessAssessment[]
+  submittedGates    GateReview[]
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+}
+
+model Permission {
+  id       String @id @default(uuid())
+  resource String
+  action   String
+
+  rolePermissions RolePermission[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
+model Launch {
+  id               String    @id @default(uuid())
+  productName      String
+  productCode      String    @unique
+  category         String?
+  businessUnit     String?
+  region           String?
+  ownerId          String
+  managerId        String
+  targetLaunchDate DateTime?
+  actualLaunchDate DateTime?
+  priority         String    @default("Medium")
+  status           String    @default("Draft")
+  description      String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  owner    User @relation("LaunchOwner",   fields: [ownerId],   references: [id])
+  manager  User @relation("LaunchManager", fields: [managerId], references: [id])
+
+  stages       Stage[]
+  tasks        Task[]
+  documents    Document[]
+  comments     Comment[]
+  assessments  ReadinessAssessment[]
+}
+
+model Stage {
+  id              String   @id @default(uuid())
+  launchId        String
+  name            String
+  sequenceOrder   Int
+  startDate       DateTime?
+  dueDate         DateTime?
+  status          String   @default("Not Started")
+  completionPct   Int      @default(0)
+  ownerId         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  launch     Launch       @relation(fields: [launchId], references: [id])
+  tasks      Task[]
+  documents  Document[]
+  gateReviews GateReview[]
+}
+
+model GateReview {
+  id          String    @id @default(uuid())
+  stageId     String
+  submittedBy String
+  decision    String    @default("Pending")
+  submittedAt DateTime  @default(now())
+  decidedAt   DateTime?
+  comments    String?
+
+  stage     Stage          @relation(fields: [stageId],     references: [id])
+  submitter User           @relation(fields: [submittedBy], references: [id])
+  approvers GateApprover[]
+}
+
+model GateApprover {
+  id            String    @id @default(uuid())
+  gateReviewId  String
+  userId        String
+  decision      String    @default("Pending")
+  comments      String?
+  decidedAt     DateTime?
+
+  gateReview GateReview @relation(fields: [gateReviewId], references: [id])
+  user       User       @relation(fields: [userId],       references: [id])
+}
+
+model Task {
+  id            String    @id @default(uuid())
+  launchId      String
+  stageId       String?
+  name          String
+  description   String?
+  assigneeId    String?
+  priority      String    @default("Medium")
+  dueDate       DateTime?
+  status        String    @default("Not Started")
+  completionPct Int       @default(0)
+  dependsOnId   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  launch    Launch  @relation(fields: [launchId],  references: [id])
+  stage     Stage?  @relation(fields: [stageId],   references: [id])
+  assignee  User?   @relation(fields: [assigneeId],references: [id])
+  dependsOn Task?   @relation("TaskDependency", fields: [dependsOnId], references: [id])
+  dependents Task[] @relation("TaskDependency")
+}
+
+model ReadinessAssessment {
+  id          String   @id @default(uuid())
+  launchId    String
+  category    String
+  score       Int      @default(0)
+  assessedBy  String
+  assessedAt  DateTime @default(now())
+
+  launch   Launch @relation(fields: [launchId],   references: [id])
+  assessor User   @relation(fields: [assessedBy], references: [id])
+}
+
+model Document {
+  id         String   @id @default(uuid())
+  launchId   String
+  stageId    String?
+  fileName   String
+  fileType   String?
+  storagePath String
+  version    Int      @default(1)
+  uploadedBy String
+  uploadedAt DateTime @default(now())
+
+  launch    Launch  @relation(fields: [launchId],   references: [id])
+  stage     Stage?  @relation(fields: [stageId],    references: [id])
+  uploader  User    @relation(fields: [uploadedBy], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  launchId  String
+  authorId  String
+  body      String
+  parentId  String?
+  createdAt DateTime @default(now())
+
+  launch  Launch   @relation(fields: [launchId], references: [id])
+  author  User     @relation(fields: [authorId], references: [id])
+  parent  Comment? @relation("CommentThread", fields: [parentId], references: [id])
+  replies Comment[] @relation("CommentThread")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  title     String
+  body      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  userId        String
+  entityType    String
+  entityId      String
+  entityLabel   String?
+  eventType     String
+  previousValue Json?
+  newValue      Json?
+  occurredAt    DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+}
