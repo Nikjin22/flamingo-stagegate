@@ -1,4 +1,4 @@
-# Flamingo Pharma — Stage Gate Management System
+# Flamingo Pharma - Stage Gate Management System
 
 A full-stack web application for managing pharmaceutical product launches through a structured 7-stage gate workflow with real-time collaboration, RBAC, and audit trails.
 
