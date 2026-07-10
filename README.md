@@ -7,7 +7,7 @@ A full-stack web application for managing pharmaceutical product launches throug
 
 ## Demo Video
 
-   [Watch walkthrough] - https://github.com/Nikjin22/flamingo-stagegate/releases/download/v1.0-demo/Flamingo.-.Stagegate.mp4
+   [Watch walkthrough](https://github.com/Nikjin22/flamingo-stagegate/releases/download/v1.0-demo/Flamingo.-.Stagegate.mp4)
 
 ## Screenshots
 
